@@ -1,0 +1,17 @@
+## .gitignore for SAFIRpy
+
+# files without extension
+# *
+# !*/
+# !*.*
+
+# # folders and files to be ignored by Git
+# SAVE/
+# CDF_PDF/
+# PhaseResults/
+# Samples/
+
+# # specific types of files
+# *.xlsx
+# *.png
+# *.pyc
