@@ -6,7 +6,7 @@
 # !*.*
 
 # # folders and files to be ignored by Git
-# SAVE/
+refSim01/
 # CDF_PDF/
 # PhaseResults/
 # Samples/
