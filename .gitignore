@@ -1,8 +1,13 @@
 ## .gitignore for SAFIRpy
 
-# files without extension
+# ignore by default
 *
 */
 *.*
 
-# # folders and files to be ignored by Git
+# list files for repository
+!.gitignore
+!nodeDef.txt
+!nodePosition.py
+!runSAFIR.py
+!shellSAFIR.py
