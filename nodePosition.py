@@ -3,9 +3,8 @@
 # __date__= "2018-07-11"
 
 #
-# post process SAFIR *.OUT file
-# cfr. limitations capabilities DIAMOND
-#
+# node positions SAFIR based on extracted nodeDef.txt file
+#,'nodeTest',['df']
 
 
 ####################
@@ -15,6 +14,14 @@
 import re
 import pandas as pd
 import numpy as np
+import sys
+from copy import deepcopy
+import json
+
+directory="C:/Users/rvcoile/Google Drive/Research/Codes/Python3.6/REF/rvcpy"
+sys.path.append(directory)
+
+from PrintAuxiliary import Print_DataFrame
 
 
 ##############
@@ -29,20 +36,6 @@ def singleNodeAddition(df_nodes,s):
 	# df_nodes.loc['Number',int(intlist[0])]=int(intlist[0]) # trial02
 	# df_nodes.loc[['X','Y','Z'],int(intlist[0])]=intlist[1:] # trial02
 
-def nodeAddition(df_nodes,s):
-	# initialize loop
-	SW_readNext=True
-
-	# input string contains NODE - extract as first NODE
-	singleNodeAddition(df_nodes,s)
-
-	# continue reading lines and handling
-	
-
-
-	# check if next one is GNODE - otherwise: let code pass through next NODE
-	# question: can REPEAT follow NODE as well? (probably yes)
-
 def equidistantNodeAddition(df_nodes,s):
 	## generate equidistant nodes from previous node
 
@@ -55,17 +48,46 @@ def equidistantNodeAddition(df_nodes,s):
 
 	# generate equidistant nodes betwen previousNode and endNode
 	stepsize=int(equilist[-1]) # assumed meaning
-	nodes=np.arange(int(previousNode['Number']),int(endNode['Number']))
+	nodes=np.arange(int(previousNode['Number']),int(endNode['Number'])+1)
 
-	X=np.linspace(previousNode['X'],endNode['X'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=False)
-	Y=np.linspace(previousNode['Y'],endNode['Y'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=False)
-	Z=np.linspace(previousNode['Z'],endNode['Z'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=False)
+	X=list(np.linspace(previousNode['X'],endNode['X'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=True))
+	Y=list(np.linspace(previousNode['Y'],endNode['Y'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=True))
+	Z=list(np.linspace(previousNode['Z'],endNode['Z'],(int(endNode['Number'])-int(previousNode['Number'])+1)/stepsize,endpoint=True))
+	Number=list(nodes); Number=[str(int(i)) for i in Number]
 
 	# add to df_nodes
-	print(int(nodes[1:])) # ERROR - work not completed - future work 'DamageVisualization'
-	# df_nodes[int(nodes[1:])]=[str(nodes[1:]),X[1:],Y[1:],Z[1:]]
+	tmp=pd.DataFrame([Number[1:],X[1:],Y[1:],Z[1:]],index=['Number','X','Y','Z'],columns=nodes[1:])
+	df_nodes=pd.concat([df_nodes,tmp],axis=1)
 
+	return df_nodes
 
+def repeatNodeAddition(df_nodes,s):
+	## repeat N nodes, with specified increment Delta, n times
+
+	# repeat command
+	repeat=[*map(float, re.findall(r"[-+]?\d*\.\d+|\d+", s))]
+	N=int(repeat[0])
+	Delta=repeat[1:4]
+	n=int(repeat[-1])
+
+	# perform repeat
+	df_local=deepcopy(df_nodes.transpose()) # transpose df_nodes for next handling
+	df_local=df_local.tail(N) # select last N rows of dataframe
+
+	for i in np.arange(n):
+
+		# add Delta
+		number=df_local.index.values+N; Number=[str(int(i)) for i in number]
+		df_local.index=number
+		df_local.loc[:,'Number']=Number
+		df_local.loc[:,'X']+=Delta[0] # add X-delta
+		df_local.loc[:,'Y']+=Delta[1] # add Y-delta
+		df_local.loc[:,'Z']+=Delta[2] # add Z-delta
+
+		# add to df_nodes
+		df_nodes=pd.concat([df_nodes,df_local.transpose()],axis=1)
+
+	return df_nodes
 
 
 #####################
@@ -106,8 +128,9 @@ with open(file_nodeDef,'r') as f: # read-only opening of nodDef-file
 	
 	while s: # empty string returns false - end of file returns empty string
 		s=f.readline()
-		if 'GNODE' in s: equidistantNodeAddition(df_nodes,s)
+		if 'GNODE' in s: df_nodes=equidistantNodeAddition(df_nodes,s)
 		elif 'NODE' in s: singleNodeAddition(df_nodes,s)
+		elif 'REPEAT' in s: df_nodes=repeatNodeAddition(df_nodes,s)
 
 
 	
@@ -135,7 +158,7 @@ with open(file_nodeDef,'r') as f: # read-only opening of nodDef-file
 ## Processing nodeDef info ##
 #############################
 
-
+df_nodes=df_nodes.transpose()
 
 ##########
 ## TEST ##
@@ -143,6 +166,13 @@ with open(file_nodeDef,'r') as f: # read-only opening of nodDef-file
 
 print(highlight+'\n'+highlight)
 print(f.closed)
-print(df_nodes)
+# print(df_nodes)
 
+###########
+## PRINT ##
+###########
 
+Print_DataFrame([df_nodes],'nodeTest',['df'])
+
+with open('nodeData_JSON','w') as f:
+	f.write(df_nodes.to_json())
