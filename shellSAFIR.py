@@ -49,8 +49,9 @@ if __name__ == "__main__":
 	## *.in file without extension ##
 	infile=userInput()
 
+	## testing ##
+	print(infile)
+
 	## execution ##
 	SAFIR_exe(SAFIRpath,infile)
 
-	## testing ##
-	# print(infile)

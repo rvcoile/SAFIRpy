@@ -67,11 +67,34 @@ def SAFIR_exe(path,file):
 
 if __name__ == "__main__": 
 
+	########################
+	## SWITCH FOR TESTING ##
+	########################
+
+	SW_testcase=2
+
+	###############
+	## EXECUTION ##
+	###############
+
 	## system path SAFIR executable ##
 	SAFIRpath="C:/SAFIR/SAFIR.exe"
 
 	## *.in file without extension ##
-	infile="C:/Users/rvcoile/Documents/SAFIR/3DsteelbeamPy/w21x44"
+	# NOTES
+	# *.in file path should not include a "."
+	if SW_testcase==1:
+		# temperature calculation - steel profile
+		infile="C:/Users/rvcoile/Documents/SAFIR/SAFIRpyTest/3DsteelbeamPy/w21x44"
+		# success confirmed
+	if SW_testcase==2:
+		# structural calculation - frame (concrete columns, steel beam) example case JHU training
+		infile="C:/Users/rvcoile/Documents/SAFIR/SAFIRpyTest/3Dframe_mod/3dframe"
+		# seemingly limitation on *.in file path length
+		# *.tem files should be copied to directory SAFIRpy
+		# TO DO
+		# - check if run refers to structural calc or thermal calc
+		# - copy *.tem files in case of structural calc to SAFIRpy directory
 
 	## execution ##
 	SAFIR_exe(SAFIRpath,infile)
