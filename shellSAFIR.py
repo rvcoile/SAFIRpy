@@ -32,7 +32,6 @@ def userInput():
 	## filename
 	filename=input("\nPlease provide path to input file (*.in): ")
 	if filename[0]=="\"": filename=filename[1:-1] # strips quotes from path
-	filename=filename[0:-3] # remove *.in extension
 
 	return filename
 
@@ -46,7 +45,7 @@ if __name__ == "__main__":
 	## system path SAFIR executable ##
 	SAFIRpath="C:/SAFIR/SAFIR.exe"
 
-	## *.in file without extension ##
+	## *.in file with extension ##
 	infile=userInput()
 
 	## testing ##
