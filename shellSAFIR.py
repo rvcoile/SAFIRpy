@@ -15,7 +15,7 @@
 # NONE
 
 # local function reads
-from runSAFIR import SAFIR_exe
+from runSAFIR import SAFIR_run
 
 # distant function reads
 # directory="C:/Users/rvcoile/Google Drive/Research/Codes/Python3.6/REF/rvcpy"
@@ -52,5 +52,5 @@ if __name__ == "__main__":
 	print(infile)
 
 	## execution ##
-	SAFIR_exe(SAFIRpath,infile)
+	SAFIR_run(SAFIRpath,infile)
 

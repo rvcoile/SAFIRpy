@@ -29,13 +29,15 @@ import shutil
 ## FUNCTION ##
 ##############
 
-def SAFIR_run(path,file):
+def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe"):
 	# run SAFIR *.in file
 	#	copy *.tem file to Python directory in case of structural analysis
 
 	## check type of SAFIR calcuation
 	SAFIRtype=SAFIR_type(file)
+	print(SAFIRtype)
 
+	## Run calculation ##
 	## if Thermal2D ==> run calculation
 	if SAFIRtype=='Thermal2D': SAFIR_exe(path,file) # run SAFIR
 	## else (Structural calculation) ==> determine and copy *.tem file to Python dir
@@ -50,7 +52,6 @@ def SAFIR_run(path,file):
 		## remove *.tem file from SAFIRpy directory 
 		os.remove(temtargetpath)
 		# if os.path.exists(os.getcwd()+'\\comeback'): os.remove(os.getcwd()+'\\comeback') # comeback removal - FAIL - administrator rights
-
 
 def SAFIR_exe(path,file):
 
@@ -95,7 +96,7 @@ if __name__ == "__main__":
 	## SWITCH FOR TESTING ##
 	########################
 
-	SW_testcase=3
+	SW_testcase=4
 	SW_debug=False
 
 
@@ -117,6 +118,7 @@ if __name__ == "__main__":
 			# temperature calculation - steel profile
 			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\3DsteelbeamPy\\w21x44"
 			# success confirmed
+			infile+=".in" # add *.in extension
 		if SW_testcase==2:
 			# 3D structural calculation - frame (concrete columns, steel beam) example case JHU training
 			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\3Dframe_mod\\3dframe"
@@ -125,12 +127,15 @@ if __name__ == "__main__":
 			# TO DO
 			# - check if run refers to structural calc or thermal calc
 			# - copy *.tem files in case of structural calc to SAFIRpy directory
+			infile+=".in" # add *.in extension
 		if SW_testcase==3:
 			# 2D structural calculation - concrete column - testcase ISO WI Probab
 			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\2Dcc\\6MN_0mm0"
-
-		# ## add *.in extension ##
-		infile+=".in"
+			infile+=".in" # add *.in extension
+		# trial from alternative path
+		if SW_testcase==4:
+			# 2D structural calculation - concrete column - testcase ISO WI Probab
+			infile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\6MN_0mm0.in"
 
 		## execution ##
 		SAFIR_run(SAFIRpath,infile)
@@ -138,6 +143,8 @@ if __name__ == "__main__":
 	###########
 	## DEBUG ##
 	###########
+
+	# temporary codes for debugging - activate as needed
 
 	else:
 
