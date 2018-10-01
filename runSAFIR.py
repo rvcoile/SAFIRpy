@@ -29,7 +29,7 @@ import shutil
 ## FUNCTION ##
 ##############
 
-def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe"):
+def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe",SW_removeItem=False):
 	# run SAFIR *.in file
 	#	copy *.tem file to Python directory in case of structural analysis
 
@@ -49,8 +49,8 @@ def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe"):
 		shutil.copy(temfilepath,temtargetpath) # copy *.tem file to SAFIRpy working directory
 		## run SAFIR
 		SAFIR_exe(path,file)
-		## remove *.tem file from SAFIRpy directory 
-		os.remove(temtargetpath)
+		## remove *.tem file from SAFIRpy directory - exception if directory equals original *.tem location
+		if SW_removeItem: os.remove(temtargetpath)
 		# if os.path.exists(os.getcwd()+'\\comeback'): os.remove(os.getcwd()+'\\comeback') # comeback removal - FAIL - administrator rights
 
 def SAFIR_exe(path,file):
