@@ -43,11 +43,12 @@ def mod_inSAFIR(filein,fileout,modDict):
 	f.write(newdata)
 	f.close()
 
-def mod_inSAFIR_multifile(df,reffile,SW_newfolder=False,SW_copytem=True):
+def mod_inSAFIR_multifile(df,reffile,SW_newfolder=False,SW_copytem=True,SW_modtem=True):
 	## function generates multiple *.in files ##
 	# df : pd.DataFrame with variables to change
 		# one row per *.in file
 		# column headers indicate pointer in reference *.in file
+		# ??? note: prescribed syntax nodeline pointer *.tem: 'nodeline_Y' and 'nodeline_Z'
 	# reffile as *.in file with pointers for substitution
 		# folder of reffile considered as folder for *.in (or new subfolder, see SW_newfolder) generation
 	# SW_newfolder : boolean, indicating if *.in files are generated in their own folder
@@ -66,6 +67,8 @@ def mod_inSAFIR_multifile(df,reffile,SW_newfolder=False,SW_copytem=True):
 	## *.in generation for each realization ##
 	# includes subfolder creation if SW_newfolder
 	for sim in df.index:
+		## local dict of pointers and substitutes
+		localmodDict=modDict[sim] # modDict conform f[mod_inSAFIR] syntax
 		## simname as string if not already string ##
 		# integer filled up to 5 characters with zeros
 		if not isinstance(sim,str): simname='{0}'.format(sim).zfill(5) # assumes index is (integer) number
@@ -76,14 +79,16 @@ def mod_inSAFIR_multifile(df,reffile,SW_newfolder=False,SW_copytem=True):
 			newfolder=reffolder+'\\'+simname
 			create_empty_folder(newfolder)
 			if not filetype=='Thermal2D' and SW_copytem:
-				temtargetpath=newfolder+'\\'+temname
+				if SW_modtem: 
+					temtargetpath=newfolder+'\\'+simname+'.tem'
+					localmodDict[temname]=simname+'.tem'
+				else: temtargetpath=newfolder+'\\'+temname
 				shutil.copy(temfilepath,temtargetpath) # copy *.tem file to SAFIRpy working directory
 
 		## *.in file updating ##
 		outfile=newfolder+'\\'+simname+'.in'
-		localmodDict=modDict[sim] # modDict conform f[mod_inSAFIR] syntax
-		mod_inSAFIR(reffile,outfile,localmodDict)
-		
+		mod_inSAFIR(reffile,outfile,localmodDict) # modify *.in file
+		mod_inSAFIR(temtargetpath,temtargetpath,localmodDict) # modify *.tem file
 
 def create_empty_folder(newfolder):
 
