@@ -42,9 +42,6 @@ def userInput():
 
 if __name__ == "__main__": 
 
-	## system path SAFIR executable ##
-	SAFIRpath="C:/SAFIR/SAFIR.exe"
-
 	## *.in file with extension ##
 	infile=userInput()
 
@@ -52,5 +49,5 @@ if __name__ == "__main__":
 	print(infile)
 
 	## execution ##
-	SAFIR_run(SAFIRpath,infile)
+	SAFIR_run(infile)
 

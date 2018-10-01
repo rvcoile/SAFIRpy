@@ -110,26 +110,53 @@ def create_empty_folder(newfolder):
 
 if __name__ == "__main__": 
 
-	## *.in file to be modified ##
-	reffile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\Fsearch_N.in"
+	## switch for testing ##
+	########################
 
-	## target *.in path ##
-	outfile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\mod.in"
+	I_test=2 # test number indicator
 
-	## Variables to be modified ##
-	# variable 00
-	ref00='Fsearch'
-	sub00=str(6*10**6)
-	# combination into Dict
-	modDict={
-	ref00:sub00
-	}
+	## test ifo choice ##
+	#####################
 
-	## Modification of *.in file ##
-	mod_inSAFIR(reffile,outfile,modDict)
+	if I_test==1:
 
-	## Testing ##
-	# print(modDict)
-	# print(modDict.keys)
+		## *.in file to be modified ##
+		reffile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\Fsearch_N.in"
+
+		## target *.in path ##
+		outfile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\modfileTest\\mod.in"
+
+		## Variables to be modified ##
+		# variable 00
+		ref00='Fsearch'
+		sub00=str(6*10**6)
+		# combination into Dict
+		modDict={
+		ref00:sub00
+		}
+
+		## Modification of *.in file ##
+		mod_inSAFIR(reffile,outfile,modDict)
+
+	if I_test==2:
+
+		## *.in file to be modified ##
+		reffile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\geomRealizations\\input.tem"
+
+		## target *.in path ##
+		outfile="C:\\Users\\rvcoile\\Documents\\SAFIR\\SAFIRpyTest\\geomRealizations\\output.tem"
+
+		## Variables to be modified ##
+		# variable 00
+		ref00='e_P[m]'
+		sub00=str(0.0001)
+		# combination into Dict
+		modDict={
+		ref00:sub00
+		}
+
+		## Modification of *.in file ##
+		mod_inSAFIR(reffile,outfile,modDict)
+
 
 
