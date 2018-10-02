@@ -16,6 +16,7 @@ import os
 import shutil
 import pandas as pd
 from copy import deepcopy
+from decimal import Decimal
 
 # local function reads
 from runSAFIR import SAFIR_type,SAFIR_TEMinIN
@@ -35,7 +36,7 @@ def mod_inSAFIR(filein,fileout,modDict):
 	newdata=deepcopy(filedata)
 	for key in modDict.keys():
 		# substitute must be string
-		if not isinstance(modDict[key],str): modDict[key]=str(modDict[key])
+		if not isinstance(modDict[key],str): modDict[key]='{:.6E}'.format(Decimal(modDict[key]))
 		newdata = newdata.replace(key,modDict[key])
 
 	# write update *.in file

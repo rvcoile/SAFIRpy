@@ -35,7 +35,6 @@ def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe",SW_removeItem=False):
 
 	## check type of SAFIR calcuation
 	SAFIRtype=SAFIR_type(file)
-	print(SAFIRtype)
 
 	## Run calculation ##
 	## if Thermal2D ==> run calculation
