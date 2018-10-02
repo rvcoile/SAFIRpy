@@ -45,7 +45,7 @@ def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe",SW_removeItem=False):
 		temfilepath,temname=SAFIR_TEMinIN(file) # determine *.tem file (full path - *.in directory assumed)
 		# temtargetpath=os.getcwd()+'\\'+'tmp.tem'
 		temtargetpath=os.getcwd()+'\\'+temname
-		shutil.copy(temfilepath,temtargetpath) # copy *.tem file to SAFIRpy working directory
+		if temtargetpath!=temfilepath: shutil.copy(temfilepath,temtargetpath) # copy *.tem file to SAFIRpy working directory
 		## run SAFIR
 		SAFIR_exe(path,file)
 		## remove *.tem file from SAFIRpy directory - exception if directory equals original *.tem location
