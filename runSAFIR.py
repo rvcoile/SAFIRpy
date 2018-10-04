@@ -6,6 +6,12 @@
 # run SAFIR through Python shell
 #
 
+#####################
+## REFERENCE PATHS ##
+#####################
+
+## system path SAFIR executable ##
+SAFIRpath="C:/SAFIR/SAFIR.exe"
 
 ####################
 ## MODULE IMPORTS ##
@@ -29,7 +35,7 @@ import shutil
 ## FUNCTION ##
 ##############
 
-def SAFIR_run(file,path="C:/SAFIR/SAFIR.exe",SW_removeItem=False):
+def SAFIR_run(file,path=SAFIRpath,SW_removeItem=False):
 	# run SAFIR *.in file
 	#	copy *.tem file to Python directory in case of structural analysis
 
@@ -106,9 +112,6 @@ if __name__ == "__main__":
 	###############
 	## EXECUTION ##
 	###############
-
-		## system path SAFIR executable ##
-		SAFIRpath="C:/SAFIR/SAFIR.exe"
 
 		## *.in file without extension ##
 		# NOTES
