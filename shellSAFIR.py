@@ -49,5 +49,8 @@ if __name__ == "__main__":
 	print(infile)
 
 	## execution ##
+	## overwrite default SAFIRpath and execute
+	# SAFIRpath="C:\\SAFIR\\SAFIR2016c0_proba.exe"
+	# SAFIR_run(infile,SAFIRpath)
+	# default execution
 	SAFIR_run(infile)
-
